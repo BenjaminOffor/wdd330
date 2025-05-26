@@ -25,6 +25,7 @@ function cartItemTemplate(item) {
     <p class="cart-card__price">Price: $${item.FinalPrice}</p>
     <div class="cart-card__actions">
       <button class="decrease-btn">−</button>
+      <button class="increase-btn">+</button>
       <button class="remove-btn">Remove</button>
     </div>
   </li>`;
@@ -35,6 +36,13 @@ function addCartEventListeners() {
     btn.addEventListener("click", (e) => {
       const id = getItemIdFromButton(e);
       decreaseQuantity(id);
+    })
+  );
+
+  document.querySelectorAll(".increase-btn").forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      const id = getItemIdFromButton(e);
+      increaseQuantity(id);
     })
   );
 
@@ -58,8 +66,18 @@ function decreaseQuantity(id) {
     if (cart[index].quantity > 1) {
       cart[index].quantity--;
     } else {
-      cart.splice(index, 1); // Remove if quantity becomes 0
+      cart.splice(index, 1); // Remove item if quantity becomes 0
     }
+    setLocalStorage("so-cart", cart);
+    renderCartContents();
+  }
+}
+
+function increaseQuantity(id) {
+  const cart = getLocalStorage("so-cart") || [];
+  const index = cart.findIndex((item) => item.Id === id);
+  if (index > -1) {
+    cart[index].quantity = (cart[index].quantity || 1) + 1;
     setLocalStorage("so-cart", cart);
     renderCartContents();
   }
