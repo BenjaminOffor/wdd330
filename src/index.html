@@ -8,7 +8,9 @@
   </head>
 
   <body>
-   <header class="divider" id="header"></header>
+    <!-- Header placeholder -->
+    <header class="divider" id="header"></header>
+
     <main class="divider">
       <div class="hero">
         <img
@@ -78,6 +80,25 @@
         </ul>
       </section>
     </main>
+
+    <!-- Footer placeholder -->
     <footer id="footer"></footer>
+
+    <!-- Script to dynamically load header and footer -->
+    <script>
+      // Load header content
+      fetch('partials/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+        });
+
+      // Load footer content
+      fetch('partials/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        });
+    </script>
   </body>
 </html>

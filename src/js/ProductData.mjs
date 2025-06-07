@@ -1,4 +1,4 @@
-function convertToJson(res) {
+async function convertToJson(res) {
   if (res.ok) {
     return res.json();
   } else {
@@ -11,13 +11,19 @@ export default class ProductData {
     this.category = category;
     this.path = `../json/${this.category}.json`;
   }
-  getData() {
-    return fetch(this.path)
-      .then(convertToJson)
-      .then((data) => data);
+
+  async getData() {
+    try {
+      const res = await fetch(this.path);
+      return await convertToJson(res);
+    } catch (error) {
+      console.error("Failed to fetch or parse JSON:", error);
+      throw error; // rethrow so callers can handle it
+    }
   }
+
   async findProductById(id) {
     const products = await this.getData();
-    return products.find((item) => item.Id === id);
+    return products.find((item) => item.Id === id); // or item.id if your JSON uses lowercase
   }
 }
